@@ -1,5 +1,7 @@
 package com.cgutman.androidremotedebugger.devconn;
 
+import android.util.Log;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -10,9 +12,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 import com.cgutman.adblib.AdbConnection;
 import com.cgutman.adblib.AdbCrypto;
 import com.cgutman.adblib.AdbStream;
+import com.cgutman.adblib.Utils;
 import com.cgutman.androidremotedebugger.AdbUtils;
 
 public class DeviceConnection implements Closeable {
+	private static final String TAG = Utils.DEBUG_TAG + "DeviceConnection";
 	private static final int CONN_TIMEOUT = 5000;
 
 	private String host;
@@ -59,6 +63,7 @@ public class DeviceConnection implements Closeable {
 	}
 	
 	public void startConnect() {
+		Log.e(TAG, "startConnect");
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -73,6 +78,7 @@ public class DeviceConnection implements Closeable {
 				}
 				
 				try {
+					Log.e(TAG, "start connection to socket, host:port: " + host + ":" + port);
 					/* Establish a connect to the remote host */
 					socket.connect(new InetSocketAddress(host, port), CONN_TIMEOUT);
 				} catch (IOException e) {
